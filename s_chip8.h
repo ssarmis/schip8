@@ -88,7 +88,7 @@ typedef struct chip8_core{
 
 
 typedef struct opcode_instruction {
-    uint8_t param[3];
+    uint8_t param[2];
 } opcode_instruction_t;
 
 typedef struct opcode_0_instruction {

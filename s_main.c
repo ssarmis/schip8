@@ -9,7 +9,7 @@ int main() {
     chip8_core_init(&core);
 
     chip8_step(&core);
-   //chip8_step(&core);
+    chip8_step(&core);
 
     return 0;
 }

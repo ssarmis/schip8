@@ -24,9 +24,14 @@ void chip8_core_init(chip8_core_t* core){
     core->pc.data = 0x200; // 512 offset
     core->sp.data = 0;
 
-    // test 0xF029
-    core->memory[core->pc.data]     = 0XF0;
-    core->memory[core->pc.data + 1] = 0x29;
+    // test goto 0x1NNN
+    core->memory[core->pc.data]     = 0x11;
+    core->memory[core->pc.data + 1] = 0x23;
+
+    // test 0xFX29
+    core->memory[0x0123]     = 0xF8;
+    core->memory[0x0123 + 1] = 0x29;
+
 }
 
 void chip8_step(chip8_core_t* core){
@@ -61,8 +66,7 @@ void chip8_step(chip8_core_t* core){
                 break;
             default:
                 _instruction.param[0] = (opcode[0] & 0x0F);
-                _instruction.param[1] = (opcode[1] & 0xF0);
-                _instruction.param[2] = (opcode[1] & 0x0F);
+                _instruction.param[1] = (opcode[1] & 0xFF);
                 chip8_execute(core, opcode, &_instruction);
                 break;
         }
@@ -74,19 +78,16 @@ void chip8_step(chip8_core_t* core){
 void chip8_execute(chip8_core_t* core, uint8_t code[2], opcode_instruction_t* instruction){
     uint16_t op = code[0] & 0x000F;
 
-    uint8_t a = code[0] & 0x0F;
-    uint8_t b = code[1] & 0xFF;
-
     switch(op){
         case _goto :
-            printf("jumping to address: %x\n\n", ((a << 8) | b));
+            printf("jumping to address: %x\n\n", ((instruction->param[0] << 8) | instruction->param[1]));
 
-            core->pc.data = ((a << 8) | b);
+            core->pc.data = ((instruction->param[0] << 8) | instruction->param[1]);
             break;
 
         case _call : break;
         case _skip_vx_nn :
-            if(core->V[a].data == b){
+            if(core->V[instruction->param[0]].data == instruction->param[1]){
                 core->pc.data += 4;
             } else {
                 core->pc.data += 2;
@@ -94,7 +95,7 @@ void chip8_execute(chip8_core_t* core, uint8_t code[2], opcode_instruction_t* in
             break;
 
         case _skip_vx_n_nn :
-            if(core->V[a].data != b){
+            if(core->V[instruction->param[0]].data != instruction->param[1]){
                 core->pc.data += 4;
             } else {
                 core->pc.data += 2;
@@ -102,7 +103,7 @@ void chip8_execute(chip8_core_t* core, uint8_t code[2], opcode_instruction_t* in
             break;
 
         case _skip_vx_vy :
-            if(core->V[a].data == core->V[((b & 0xF0) >> 4)].data) {
+            if(core->V[instruction->param[0]].data == core->V[((instruction->param[1] & 0xF0) >> 4)].data) {
                 core->pc.data += 4;
             } else {
                 core->pc.data += 2;
@@ -110,19 +111,19 @@ void chip8_execute(chip8_core_t* core, uint8_t code[2], opcode_instruction_t* in
             break;
 
         case _set_vx :
-            core->V[a].data = b;
+            core->V[instruction->param[0]].data = instruction->param[1];
 
             core->pc.data += 2;
             break;
 
         case _add_nn_vx :
-            core->V[a].data += b;
+            core->V[instruction->param[0]].data += instruction->param[1];
 
             core->pc.data += 2;
             break;
 
         case _skip_vx_n_vy :
-            if(core->V[a].data != core->V[((b & 0xF0) >> 4)].data) {
+            if(core->V[instruction->param[0]].data != core->V[((instruction->param[1] & 0xF0) >> 4)].data) {
                 core->pc.data += 4;
             } else {
                 core->pc.data += 2;
@@ -130,17 +131,17 @@ void chip8_execute(chip8_core_t* core, uint8_t code[2], opcode_instruction_t* in
             break;
 
         case _set_I :
-            core->I.data = ((a << 8) | b);
+            core->I.data = ((instruction->param[0] << 8) | instruction->param[1]);
 
             core->pc.data += 2;
             break;
 
         case _jump_nnn_v0 :
-            core->pc.data += ((a << 8) | b) + core->V[0].data;
+            core->pc.data += ((instruction->param[0] << 8) | instruction->param[1]) + core->V[0].data;
             break;
 
         case _set_vx_rand_nn :
-            core->V[a].data = ((rand() % 255) & b);
+            core->V[instruction->param[0]].data = ((rand() % 255) & instruction->param[1]);
             core->pc.data += 2;
             break;
 
@@ -157,75 +158,73 @@ void chip8_execute(chip8_core_t* core, uint8_t code[2], opcode_instruction_t* in
 void chip8_execute8(chip8_core_t* core, uint8_t code[2], opcode_8_instruction_t* instruction){
     uint16_t op = ((code[0] & 0xF0) << 8) | ((code[1] & 0x0F));
 
-    uint8_t a = code[0] & 0x0F;
-    uint8_t b = code[1] & 0xF0;
-
     switch(op){
         case _set_vx_vy :
-            core->V[a].data = core->V[b].data;
+            core->V[instruction->param[0]].data = core->V[instruction->param[1]].data;
             core->pc.data += 2;
             break;
 
         case _set_vx_vx_or_vy :
-            core->V[a].data |= core->V[b].data;
+            core->V[instruction->param[0]].data |= core->V[instruction->param[1]].data;
             core->pc.data += 2;
             break;
 
         case _set_vx_vx_and_vy :
-            core->V[a].data &= core->V[b].data;
+            core->V[instruction->param[0]].data &= core->V[instruction->param[1]].data;
             core->pc.data += 2;
             break;
 
         case _set_vx_vx_xor_vy :
-            core->V[a].data ^= core->V[b].data;
+            core->V[instruction->param[0]].data ^= core->V[instruction->param[1]].data;
             core->pc.data += 2;
             break;
 
         case _add_vy_vx :
-            if(core->V[a].data + core->V[b].data > (~0x00)){
+            if(core->V[instruction->param[0]].data + core->V[instruction->param[1]].data > (~0x00)){
                 core->V[0xF].data = 1;
             } else {
                 core->V[0xF].data = 0;
             }
 
-            core->V[a].data += core->V[b].data;
+            core->V[instruction->param[0]].data += core->V[instruction->param[1]].data;
 
             core->pc.data += 2;
             break;
 
         case _sub_vy_vx :
-            if(core->V[a].data - core->V[b].data > (~0x00)){
+            if(core->V[instruction->param[0]].data - core->V[instruction->param[1]].data > (~0x00)){
                 core->V[0xF].data = 0;
             } else {
                 core->V[0xF].data = 1;
             }
 
-            core->V[a].data -= core->V[b].data;
+            core->V[instruction->param[0]].data -= core->V[instruction->param[1]].data;
 
             core->pc.data += 2;
             break;
 
         case _shiftr_vy_vx :
-            core->V[a].data = core->V[b].data >> 1;
-            core->V[0xF].data = core->V[b].data & 0x01;
+            core->V[instruction->param[0]].data = core->V[instruction->param[1]].data >> 1;
+            core->V[0xF].data = core->V[instruction->param[1]].data & 0x01;
             core->pc.data += 2;
             break;
 
         case _set_vx_vy_vx :
-            if(core->V[b].data - core->V[a].data > (~0x00)){
+            if(core->V[instruction->param[1]].data - core->V[instruction->param[0]].data > (~0x00)){
                 core->V[0xF].data = 0;
             } else {
                 core->V[0xF].data = 1;
             }
 
-            core->V[a].data = core->V[b].data - core->V[a].data;
+            core->V[instruction->param[0]].data = core->V[instruction->param[1]].data -
+                    core->V[instruction->param[0]].data;
 
             core->pc.data += 2;
             break;
 
         case _shiftl_vy_vx :
-            core->V[a].data = core->V[b].data << 1;
-            core->V[0xF].data = core->V[b].data & 0x80;
+            core->V[instruction->param[0]].data = core->V[instruction->param[1]].data << 1;
+            core->V[0xF].data = core->V[instruction->param[1]].data & 0x80;
             core->pc.data += 2;
             break;
     }
@@ -247,27 +246,25 @@ void chip8_executeE(chip8_core_t* core, uint8_t code[2], opcode_E_instruction_t*
 void chip8_executeF(chip8_core_t* core, uint8_t code[2], opcode_F_instruction_t* instruction){
     uint16_t op = ((code[0] & 0xF0) << 8) | ((code[1] & 0xFF));
 
-    uint8_t a = (code[0] & 0x0F);
-
     switch(op) {
         case _set_vx_time : break;
         case _key_wait : break;
         case _set_delay_vx : break;
         case _set_time_vx : break;
         case _add_vx_i :
-            core->I.data += core->V[a].data;
+            core->I.data += core->V[instruction->param].data;
             core->pc.data += 2;
             break;
 
         case _set_i_sprite_vx :
-            printf("got it!\n\n");
+            printf("got it!%d\n\n", instruction->param);
             core->pc.data += 2;
             break;
 
         case _sore_bcd_vx :
-            core->memory[core->I.data + 0] = (core->V[a].data / 100) % 10;
-            core->memory[core->I.data + 1] = (core->V[a].data / 10) % 10;
-            core->memory[core->I.data + 2] = (core->V[a].data) % 10;
+            core->memory[core->I.data + 0] = (core->V[instruction->param].data / 100) % 10;
+            core->memory[core->I.data + 1] = (core->V[instruction->param].data / 10) % 10;
+            core->memory[core->I.data + 2] = (core->V[instruction->param].data) % 10;
             core->pc.data += 2;
             break;
 
