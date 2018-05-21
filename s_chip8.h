@@ -18,6 +18,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stdlib.h>
 
 enum _0_opcodes {
     _clear_screen = 0x00E0,
@@ -109,14 +110,14 @@ void chip8_core_init(chip8_core_t* core);
 
 void chip8_step(chip8_core_t* core);
 
-void chip8_execute(uint8_t code[2], opcode_instruction_t* instruction);
+void chip8_execute(chip8_core_t* core, uint8_t code[2], opcode_instruction_t* instruction);
 
-void chip8_execute0(uint8_t code[2], opcode_0_instruction_t* instruction);
+void chip8_execute0(chip8_core_t* core, uint8_t code[2], opcode_0_instruction_t* instruction);
 
-void chip8_execute8(uint8_t code[2], opcode_8_instruction_t* instruction);
+void chip8_execute8(chip8_core_t* core, uint8_t code[2], opcode_8_instruction_t* instruction);
 
-void chip8_executeE(uint8_t code[2], opcode_E_instruction_t* instruction);
+void chip8_executeE(chip8_core_t* core, uint8_t code[2], opcode_E_instruction_t* instruction);
 
-void chip8_executeF(uint8_t code[2], opcode_F_instruction_t* instruction);
+void chip8_executeF(chip8_core_t* core, uint8_t code[2], opcode_F_instruction_t* instruction);
 
 void chip8_rtomem(chip8_core_t* core, const char* filename);
