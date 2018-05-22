@@ -21,50 +21,50 @@
 #include <stdlib.h>
 
 enum _0_opcodes {
-    _clear_screen = 0x00E0,
-    _return_subroutine = 0x00EE
+    _clear_screen       = 0x00E0,
+    _return_subroutine  = 0x00EE
 };
 
 enum _8_opcodes {
-    _set_vx_vy = 0x8000,
-    _set_vx_vx_or_vy = 0x8001,
-    _set_vx_vx_and_vy = 0x8002,
-    _set_vx_vx_xor_vy = 0x8003,
-    _add_vy_vx = 0x8004,
-    _sub_vy_vx = 0x8005,
-    _shiftr_vy_vx = 0x8006,
-    _set_vx_vy_vx = 0x8007,
-    _shiftl_vy_vx = 0x800E
+    _set_vx_vy          = 0x8000,
+    _set_vx_vx_or_vy    = 0x8001,
+    _set_vx_vx_and_vy   = 0x8002,
+    _set_vx_vx_xor_vy   = 0x8003,
+    _add_vy_vx          = 0x8004,
+    _sub_vy_vx          = 0x8005,
+    _shiftr_vy_vx       = 0x8006,
+    _set_vx_vy_vx       = 0x8007,
+    _shiftl_vy_vx       = 0x800E
 };
 
 enum _E_opcodes {
-    _skip_vx_pressed = 0xE09E,
-    _skip_vx_released = 0xE0A1
+    _skip_vx_pressed    = 0xE09E,
+    _skip_vx_released   = 0xE0A1
 };
 
 enum _F_opcodes {
-    _set_vx_time = 0xF008,
-    _key_wait =0XF00A,
-    _set_delay_vx = 0XF015,
-    _set_time_vx = 0XF018,
-    _add_vx_i = 0XF01E,
-    _set_i_sprite_vx = 0XF029,
-    _sore_bcd_vx = 0XF033,
-    _store_v0_vx = 0XF055,
-    _fill_v0_vx_i = 0XF065
+    _set_vx_time        = 0xF008,
+    _key_wait           = 0XF00A,
+    _set_delay_vx       = 0XF015,
+    _set_time_vx        = 0XF018,
+    _add_vx_i           = 0XF01E,
+    _set_i_sprite_vx    = 0XF029,
+    _sore_bcd_vx        = 0XF033,
+    _store_v0_vx        = 0XF055,
+    _fill_v0_vx_i       = 0XF065
 };
 
 enum opcodes{
-    _goto = 0x1,
-    _call = 0x2,
-    _skip_vx_nn = 0x3,
-    _skip_vx_n_nn = 0x4,
-    _skip_vx_vy = 0x5,
-    _set_vx = 0x6,
-    _add_nn_vx = 0x7,
-    _skip_vx_n_vy = 0x9,
-    _set_I = 0xA,
-    _jump_nnn_v0 = 0xB,
+    _goto           = 0x1,
+    _call           = 0x2,
+    _skip_vx_nn     = 0x3,
+    _skip_vx_n_nn   = 0x4,
+    _skip_vx_vy     = 0x5,
+    _set_vx         = 0x6,
+    _add_nn_vx      = 0x7,
+    _skip_vx_n_vy   = 0x9,
+    _set_I          = 0xA,
+    _jump_nnn_v0    = 0xB,
     _set_vx_rand_nn = 0xC,
     _draw = 0xD
 };
@@ -78,14 +78,14 @@ typedef struct chip8_16bit_register {
 } chip8_16bit_register_t;
 
 typedef struct chip8_core{
-    uint8_t memory[4096];
-    chip8_8bit_register_t V[16];
-    chip8_8bit_register_t stack[32];
-    chip8_16bit_register_t sp;
-    chip8_16bit_register_t pc;
-    chip8_16bit_register_t I;
+    uint8_t display[64 * 32]; // resolution of the screen was 64 x 32
+    uint8_t memory[4096]; // 4k memory
+    chip8_8bit_register_t V[16]; // 16 V registers
+    chip8_8bit_register_t stack[32]; // a stack to return from subroutines
+    chip8_16bit_register_t sp; // stack pointer
+    chip8_16bit_register_t pc; // program counter
+    chip8_16bit_register_t I; // I register
 } chip8_core_t;
-
 
 typedef struct opcode_instruction {
     uint8_t param[2];
