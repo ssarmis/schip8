@@ -17,8 +17,12 @@
 
 #pragma once
 
+//#define DEBUG_DRAWING
+//#define DEBUG_OPS
+
 #include <stdint.h>
 #include <stdlib.h>
+#include <mem.h>
 
 enum _0_opcodes {
     _clear_screen       = 0x00E0,
@@ -43,7 +47,7 @@ enum _E_opcodes {
 };
 
 enum _F_opcodes {
-    _set_vx_time        = 0xF008,
+    _set_vx_time        = 0xF007,
     _key_wait           = 0XF00A,
     _set_delay_vx       = 0XF015,
     _set_time_vx        = 0XF018,
@@ -78,10 +82,13 @@ typedef struct chip8_16bit_register {
 } chip8_16bit_register_t;
 
 typedef struct chip8_core{
+    uint8_t delay;
+    uint8_t sound;
+    uint8_t keys[16];
     uint8_t display[64 * 32]; // resolution of the screen was 64 x 32
     uint8_t memory[4096]; // 4k memory
+    uint16_t stack[16]; // a stack to return from subroutines
     chip8_8bit_register_t V[16]; // 16 V registers
-    chip8_8bit_register_t stack[32]; // a stack to return from subroutines
     chip8_16bit_register_t sp; // stack pointer
     chip8_16bit_register_t pc; // program counter
     chip8_16bit_register_t I; // I register
