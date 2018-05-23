@@ -22,6 +22,25 @@
 #include "s_chip8.h"
 #include "s_window.h"
 
+enum key_code{
+    ONE_KEY = 0,
+    TWO_KEY = 1,
+    THREE_KEY = 2,
+    C_KEY = 3,
+    FOUR_KEY = 4,
+    FIVE_KEY = 5,
+    SIX_KEY = 6,
+    D_KEY = 7,
+    SEVEN_KEY = 8,
+    EIGHT_KEY = 9,
+    NINE_KEY = 10,
+    E_KEY = 11,
+    A_KEY = 12,
+    ZERO_KEY = 13,
+    B_KEY = 14,
+    F_KEY = 15
+};
+
 typedef struct app {
     window_t window;
     SDL_Event event;

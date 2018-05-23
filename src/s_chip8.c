@@ -401,11 +401,19 @@ void chip8_executeE(chip8_core_t* core, uint8_t code[2], opcode_E_instruction_t*
 
     switch(op){
         case _skip_vx_pressed :// 0xEX9E
-            core->pc.data += 2;
+            if(core->keys[core->V[instruction->param].data]) {
+                core->pc.data += 4;
+            } else {
+                core->pc.data += 2;
+            }
             break;
 
         case _skip_vx_released :// 0xEXA1
-            core->pc.data += 4;
+            if(!core->keys[core->V[instruction->param].data]) {
+                core->pc.data += 4;
+            } else {
+                core->pc.data += 2;
+            }
             break;
 
         default:
@@ -425,10 +433,17 @@ void chip8_executeF(chip8_core_t* core, uint8_t code[2], opcode_F_instruction_t*
             core->pc.data += 2;
             break;
 
-        case _key_wait :
+        case _key_wait :// 0xFX0A
+
+            for(i = 0; i < 16; ++i){
+                if(core->keys[i]){
+                    core->V[instruction->param].data = i;
+                    core->pc.data += 2;
+                    break;
+                }
+            }
+
             return;
-            core->pc.data += 2;
-            break;
 
         case _set_delay_vx :// 0xFX15
 #ifdef DEBUG_OPS
