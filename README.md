@@ -1,2 +1,4 @@
 # A work-in-progress chip-8 emulator
-Documentation -> https://en.wikipedia.org/wiki/CHIP-8
+Took information from:<br>
+- https://en.wikipedia.org/wiki/CHIP-8
+- http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
