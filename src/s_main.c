@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
     chip8_core_t core;
     chip8_core_init(&core);
 
-    chip8_rtomem(&core, "../BLITZ");
+    chip8_rtomem(&core, "../PONG2");
 
     app_t app;
     app_init(&app);

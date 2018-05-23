@@ -65,7 +65,7 @@ void app_run(app_t* app, chip8_core_t* core){
                 NULL,
                 app->window.window_screen.pixels,
                 64 * 4);
-        SDL_RenderClear(app->window.window_screen.renderer);
+        //SDL_RenderClear(app->window.window_screen.renderer);
         SDL_RenderCopy(app->window.window_screen.renderer, app->window.window_screen.screen, NULL, NULL);
         SDL_RenderPresent(app->window.window_screen.renderer);
     }
