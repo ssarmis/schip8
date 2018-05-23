@@ -1,5 +1,4 @@
-//	unrolled_list is a simple C implementation of
-//  the unrolled linked list
+//	schip8 is a chip-8 emulator
 //
 //	Copyright (C) 2018 Streanga Sarmis-Stefan<streangasarmis@gmail.com>
 //
@@ -15,6 +14,7 @@
 //
 //	You should have received a copy of the GNU General Public License
 //	along with this program, if not, see <http://www.gnu.org/licenses/>.
+
 
 #pragma once
 
