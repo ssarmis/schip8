@@ -20,9 +20,10 @@
 //#define DEBUG_DRAWING
 //#define DEBUG_OPS
 
+#include <mem.h>
+#include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <mem.h>
 
 enum _0_opcodes {
     _clear_screen       = 0x00E0,
