@@ -1,4 +1,5 @@
-//	schip8 is a chip-8 emulator
+//	unrolled_list is a simple C implementation of
+//  the unrolled linked list
 //
 //	Copyright (C) 2018 Streanga Sarmis-Stefan<streangasarmis@gmail.com>
 //
@@ -15,27 +16,31 @@
 //	You should have received a copy of the GNU General Public License
 //	along with this program, if not, see <http://www.gnu.org/licenses/>.
 
+#pragma once
 
-#include <stdio.h>
+#include <assert.h>
+#include <malloc.h>
+#include <stdint.h>
 #include <SDL2/SDL.h>
 
-#include "s_app.h"
-#include "s_chip8.h"
+typedef struct window_details {
+    uint8_t scale;
+} window_details_t;
 
-int main(int argc, char* argv[]) {
+typedef struct window_screen {
+    SDL_Renderer* renderer;
+    SDL_Texture* screen;
+    uint8_t pixels[64 * 32 * 4];
+} window_screen_t;
 
-    chip8_core_t core;
-    chip8_core_init(&core);
+typedef struct window {
+    window_details_t window_details;
+    window_screen_t window_screen;
+    SDL_Window* window;
+} window_t;
 
-    chip8_rtomem(&core, "../UFO");
+// TODO add config reading function
 
-    app_t app;
-    app_init(&app);
+void window_init(window_t* window, uint8_t scale);
 
-    app_run(&app, &core);
-
-    app_shutdown(&app);
-    chip8_shutdown(&core);
-
-    return 0;
-}
+void window_shutdown(window_t* window);

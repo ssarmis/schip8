@@ -129,3 +129,5 @@ void chip8_executeE(chip8_core_t* core, uint8_t code[2], opcode_E_instruction_t*
 void chip8_executeF(chip8_core_t* core, uint8_t code[2], opcode_F_instruction_t* instruction);
 
 void chip8_rtomem(chip8_core_t* core, const char* filename);
+
+void chip8_shutdown(chip8_core_t* core);

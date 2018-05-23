@@ -454,7 +454,6 @@ void chip8_executeF(chip8_core_t* core, uint8_t code[2], opcode_F_instruction_t*
             break;
 
         case _set_i_sprite_vx :// 0xFX29
-            //printf("got it!%d\n\n", instruction->param);
             core->I.data = core->V[instruction->param].data * 0x5;
             core->pc.data += 2;
             break;
@@ -504,4 +503,36 @@ void chip8_rtomem(chip8_core_t* core, const char* filename){
     fread((&core->memory[512]), sizeof(uint8_t), size, file);
 
     fclose(file);
+}
+
+void chip8_shutdown(chip8_core_t* core){
+    // I don't really need this, since there will be
+    // no data leaks
+    int i;
+
+    for(i = 0; i < 16; ++i) {
+        core->keys[i] = 0;
+    }
+
+    for(i = 0; i < 16; ++i) {
+        core->stack[i] = 0;
+    }
+
+    for(i = 0; i < 64 * 32; ++i){
+        core->display[i] = 0;
+    }
+
+    for(i = 0; i < 16; ++i) {
+        core->V[i].data = 0;
+    }
+
+    for(i = 0; i < 4096; ++i) {
+        core->memory[i] = 0;
+    }
+
+    core->delay = 0;
+    core->sound = 0;
+    core->I.data = 0;
+    core->pc.data = 0;
+    core->sp.data = 0;
 }
