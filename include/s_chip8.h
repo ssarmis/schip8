@@ -20,7 +20,12 @@
 //#define DEBUG_DRAWING
 //#define DEBUG_OPS
 
-#include <mem.h>
+#ifdef _WIN32
+    #include <mem.h>
+#elif __linux
+    #include <memory.h>
+#endif
+
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>

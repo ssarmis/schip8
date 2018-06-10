@@ -25,7 +25,7 @@ void app_init(app_t* app){
 }
 
 void app_run(app_t* app, chip8_core_t* core){
-    assert(app->window.window_screen.pixels != NULL);
+    assert(app->window.window != NULL);
 
     for(;;){
         SDL_Delay(1000 / 800);

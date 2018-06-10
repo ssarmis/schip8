@@ -508,12 +508,17 @@ void chip8_rtomem(chip8_core_t* core, const char* filename){
     FILE* file;
     file = fopen(filename, "rb");
 
-    // TODO add error checking
     fseek(file, 0, SEEK_END);
 
     long size = ftell(file);
 
     rewind(file);
+
+    if(size % 2){
+        printf("The file is not valid, incomplete codes, exiting.");
+        chip8_shutdown(core);
+        exit(0);
+    }
 
     fread((&core->memory[512]), sizeof(uint8_t), size, file);
 

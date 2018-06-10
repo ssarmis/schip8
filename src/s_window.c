@@ -37,7 +37,6 @@ void window_init(window_t* window, uint8_t scale){
 }
 
 void window_shutdown(window_t* window){
-    free(window->window_screen.pixels);
     SDL_DestroyRenderer(window->window_screen.renderer);
     SDL_DestroyTexture(window->window_screen.screen);
     SDL_DestroyWindow(window->window);
