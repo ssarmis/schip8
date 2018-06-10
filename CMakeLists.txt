@@ -24,6 +24,8 @@ if (WIN32)
             ${S_CHIP8_INCLUDE}/s_window.h
             ${S_CHIP8_INCLUDE}/s_chip8.h
             ${S_CHIP8_INCLUDE}/s_app.h)
+
+    target_link_libraries(schip8 mingw32 SDL2main SDL2)
 endif (WIN32)
 
 if (UNIX)
@@ -43,6 +45,6 @@ if (UNIX)
             ${S_CHIP8_INCLUDE}/s_chip8.h
             ${S_CHIP8_INCLUDE}/s_app.h)
 
+    target_link_libraries(schip8 ${SDL2_LIBRARIES})
 endif (UNIX)
 
-target_link_libraries(schip8 ${SDL2_LIBRARIES})

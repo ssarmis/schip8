@@ -17,6 +17,113 @@
 
 #include "s_app.h"
 
+// TODO duplicate code, make just one function V
+void app_assign_pressed_key(SDL_Keycode c, chip8_core_t* core){
+    switch(c){
+        case SDLK_0:
+            core->keys[ZERO_KEY] = 1;
+            break;
+        case SDLK_1:
+            core->keys[ONE_KEY] = 1;
+            break;
+        case SDLK_2:
+            core->keys[TWO_KEY] = 1;
+            break;
+        case SDLK_3:
+            core->keys[THREE_KEY] = 1;
+            break;
+        case SDLK_4:
+            core->keys[FOUR_KEY] = 1;
+            break;
+        case SDLK_5:
+            core->keys[FIVE_KEY] = 1;
+            break;
+        case SDLK_6:
+            core->keys[SIX_KEY] = 1;
+            break;
+        case SDLK_7:
+            core->keys[SEVEN_KEY] = 1;
+            break;
+        case SDLK_8:
+            core->keys[EIGHT_KEY] = 1;
+            break;
+        case SDLK_9:
+            core->keys[NINE_KEY] = 1;
+            break;
+        case SDLK_a:
+            core->keys[A_KEY] = 1;
+            break;
+        case SDLK_b:
+            core->keys[B_KEY] = 1;
+            break;
+        case SDLK_c:
+            core->keys[C_KEY] = 1;
+            break;
+        case SDLK_d:
+            core->keys[D_KEY] = 1;
+            break;
+        case SDLK_e:
+            core->keys[E_KEY] = 1;
+            break;
+        case SDLK_f:
+            core->keys[F_KEY] = 1;
+            break;
+    }
+}
+
+void app_assign_released_key(SDL_Keycode c, chip8_core_t* core){
+    switch(c){
+        case SDLK_0:
+            core->keys[ZERO_KEY] = 0;
+            break;
+        case SDLK_1:
+            core->keys[ONE_KEY] = 0;
+            break;
+        case SDLK_2:
+            core->keys[TWO_KEY] = 0;
+            break;
+        case SDLK_3:
+            core->keys[THREE_KEY] = 0;
+            break;
+        case SDLK_4:
+            core->keys[FOUR_KEY] = 0;
+            break;
+        case SDLK_5:
+            core->keys[FIVE_KEY] = 0;
+            break;
+        case SDLK_6:
+            core->keys[SIX_KEY] = 0;
+            break;
+        case SDLK_7:
+            core->keys[SEVEN_KEY] = 0;
+            break;
+        case SDLK_8:
+            core->keys[EIGHT_KEY] = 0;
+            break;
+        case SDLK_9:
+            core->keys[NINE_KEY] = 0;
+            break;
+        case SDLK_a:
+            core->keys[A_KEY] = 0;
+            break;
+        case SDLK_b:
+            core->keys[B_KEY] = 0;
+            break;
+        case SDLK_c:
+            core->keys[C_KEY] = 0;
+            break;
+        case SDLK_d:
+            core->keys[D_KEY] = 0;
+            break;
+        case SDLK_e:
+            core->keys[E_KEY] = 0;
+            break;
+        case SDLK_f:
+            core->keys[F_KEY] = 0;
+            break;
+    }
+}
+
 void app_init(app_t* app){
     assert(app != NULL);
     SDL_Init(SDL_INIT_EVERYTHING);
@@ -74,111 +181,4 @@ void app_run(app_t* app, chip8_core_t* core){
 void app_shutdown(app_t* app){
     window_shutdown(&app->window);
     SDL_Quit();
-}
-
-// TODO duplicate code, make just one function V
-void app_assign_pressed_key(const char c, chip8_core_t* core){
-    switch(c){
-        case SDLK_0:
-            core->keys[ZERO_KEY] = 1;
-            break;
-        case SDLK_1:
-            core->keys[ONE_KEY] = 1;
-            break;
-        case SDLK_2:
-            core->keys[TWO_KEY] = 1;
-            break;
-        case SDLK_3:
-            core->keys[THREE_KEY] = 1;
-            break;
-        case SDLK_4:
-            core->keys[FOUR_KEY] = 1;
-            break;
-        case SDLK_5:
-            core->keys[FIVE_KEY] = 1;
-            break;
-        case SDLK_6:
-            core->keys[SIX_KEY] = 1;
-            break;
-        case SDLK_7:
-            core->keys[SEVEN_KEY] = 1;
-            break;
-        case SDLK_8:
-            core->keys[EIGHT_KEY] = 1;
-            break;
-        case SDLK_9:
-            core->keys[NINE_KEY] = 1;
-            break;
-        case SDLK_a:
-            core->keys[A_KEY] = 1;
-            break;
-        case SDLK_b:
-            core->keys[B_KEY] = 1;
-            break;
-        case SDLK_c:
-            core->keys[C_KEY] = 1;
-            break;
-        case SDLK_d:
-            core->keys[D_KEY] = 1;
-            break;
-        case SDLK_e:
-            core->keys[E_KEY] = 1;
-            break;
-        case SDLK_f:
-            core->keys[F_KEY] = 1;
-            break;
-    }
-}
-
-void app_assign_released_key(const char c, chip8_core_t* core){
-    switch(c){
-        case SDLK_0:
-            core->keys[ZERO_KEY] = 0;
-            break;
-        case SDLK_1:
-            core->keys[ONE_KEY] = 0;
-            break;
-        case SDLK_2:
-            core->keys[TWO_KEY] = 0;
-            break;
-        case SDLK_3:
-            core->keys[THREE_KEY] = 0;
-            break;
-        case SDLK_4:
-            core->keys[FOUR_KEY] = 0;
-            break;
-        case SDLK_5:
-            core->keys[FIVE_KEY] = 0;
-            break;
-        case SDLK_6:
-            core->keys[SIX_KEY] = 0;
-            break;
-        case SDLK_7:
-            core->keys[SEVEN_KEY] = 0;
-            break;
-        case SDLK_8:
-            core->keys[EIGHT_KEY] = 0;
-            break;
-        case SDLK_9:
-            core->keys[NINE_KEY] = 0;
-            break;
-        case SDLK_a:
-            core->keys[A_KEY] = 0;
-            break;
-        case SDLK_b:
-            core->keys[B_KEY] = 0;
-            break;
-        case SDLK_c:
-            core->keys[C_KEY] = 0;
-            break;
-        case SDLK_d:
-            core->keys[D_KEY] = 0;
-            break;
-        case SDLK_e:
-            core->keys[E_KEY] = 0;
-            break;
-        case SDLK_f:
-            core->keys[F_KEY] = 0;
-            break;
-    }
 }
